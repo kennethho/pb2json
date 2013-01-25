@@ -22,21 +22,23 @@ You can easily install protobuf and jansson in most recent Linux distros. In Ubu
 4. Usage
 You can refer to $src/test/test_json.cpp.
 
-It is pretty simple to use, there are two APIs:
-    // This overload takes a initailized protobuf message object
-    // and returns a json string.
-    // This is the API to use when you have a initailized message object.
-    std::string pb2json(const google::protobuf::Message& msg);
-    // Example usage:
-    //   SomeMessage msg;
-    //   msg.ParseFromString(str);
-    //   cout << pb2json(msg) << endl;
+It is pretty simple to use, there are two APIs.
 
-    // This overload takes a serialized protubuf binary in a string
-    // and returns a json string.
-    // This is the API to use when you have a serialized protobuf and you
-    // know the type of message it is.
+First overload takes a initailized protobuf message object and returns a json string.
+
+    std::string pb2json(const google::protobuf::Message& msg);
+    
+This is the API to use when you have a initailized message object. Example usage:
+
+    SomeMessage msg;
+    msg.ParseFromString(str);
+    cout << pb2json(msg) << endl;
+
+Second overload takes a serialized protubuf binary in a string and returns a json string.
+
     template <typename PbMessageType>
     std::string pb2json(const std::string& str);
-    // Example usage:
-    //   cout << pb2json<SomeMessage>(str) << endl;
+
+This is the API to use when you have a serialized protobuf and you know the type of message it is. Example usage:
+
+    cout << pb2json<SomeMessage>(str) << endl;
