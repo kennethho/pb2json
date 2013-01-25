@@ -27,7 +27,7 @@ It is pretty simple to use, there are two APIs:
     // and returns a json string.
     // This is the API to use when you have a initailized message object.
     std::string pb2json(const google::protobuf::Message& msg);
-    // Exampe usage:
+    // Example usage:
     //   SomeMessage msg;
     //   msg.ParseFromString(str);
     //   cout << pb2json(msg) << endl;
@@ -38,5 +38,5 @@ It is pretty simple to use, there are two APIs:
     // know the type of message it is.
     template <typename PbMessageType>
     std::string pb2json(const std::string& str);
-    // Exampe usage:
+    // Example usage:
     //   cout << pb2json<SomeMessage>(str) << endl;
