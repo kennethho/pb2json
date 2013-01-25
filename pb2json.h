@@ -1,9 +1,25 @@
-#include <jansson.h>
+#ifndef PB2JSON_H
+#define PB2JSON_H
+
 #include <string>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/message.h>
-using namespace google::protobuf;
-char *pb2json(const Message &msg);
-char *pb2json(Message *msg,const char *buf,int len);
-static json_t *parse_msg(const Message *msg);
-static json_t *parse_repeated_field(const Message *msg,const Reflection * ref,const FieldDescriptor *field);
+
+// Forward declaration
+namespace google
+{
+  namespace protobuf
+  {
+    class Message;
+  } // namespace protobuf
+} // namespace google
+
+std::string pb2json(const google::protobuf::Message& msg);
+
+template <typename PbMessageType>
+std::string pb2json(const std::string& str)
+{
+  PbMessageType msg;
+  msg.ParseFromString(str);
+  return pb2json(msg);
+}
+
+#endif // PB2JSON_H

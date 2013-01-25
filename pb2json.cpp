@@ -1,23 +1,22 @@
 #include "pb2json.h"
 
+#include <jansson.h>
+
+#include <google/protobuf/descriptor.h>
+#include <google/protobuf/message.h>
+
+#include <string>
+
+using namespace google::protobuf;
 using std::string;
-char * pb2json(const Message &msg)
+
+
+namespace /*unnamed*/
 {
-	json_t *root = parse_msg(&msg);
-	char *json = json_dumps(root,0);
-	json_decref(root);
-	return json; // should be freed by caller
-}
-char * pb2json( Message *msg,const char *buf ,int len)
-{
-	string s (buf,len);
-	msg->ParseFromString(s);
-	json_t *root = parse_msg(msg);
-	char *json = json_dumps(root,0);
-	json_decref(root);
-	return json; // should be freed by caller
-}
-static json_t *parse_repeated_field(const Message *msg,const Reflection * ref,const FieldDescriptor *field)
+
+json_t *parse_msg(const Message *msg);
+
+json_t *parse_repeated_field(const Message *msg,const Reflection * ref,const FieldDescriptor *field)
 {
 	size_t count = ref->FieldSize(*msg,field);
 	json_t *arr = json_array();	
@@ -99,7 +98,8 @@ static json_t *parse_repeated_field(const Message *msg,const Reflection * ref,co
 	}
 	return arr;
 }
-static json_t *parse_msg(const Message *msg)
+
+json_t *parse_msg(const Message *msg)
 {
 	const Descriptor *d = msg->GetDescriptor();
 	if(!d)return NULL;
@@ -181,5 +181,16 @@ static json_t *parse_msg(const Message *msg)
 
 	}
 	return root;
+}
 
+} // namespace /*unnamed*/
+
+std::string pb2json(const google::protobuf::Message& msg)
+{
+  json_t *root = parse_msg(&msg);
+  char *buffer = json_dumps(root,0);
+  json_decref(root);
+  string json(buffer);
+  free(buffer);
+  return json;
 }
