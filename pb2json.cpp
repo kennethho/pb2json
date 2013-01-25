@@ -188,6 +188,9 @@ json_t *parse_msg(const Message *msg)
 std::string pb2json(const google::protobuf::Message& msg)
 {
   json_t *root = parse_msg(&msg);
+  if(!root)
+    throw std::runtime_error("Unable to transcode to json");
+
   char *buffer = json_dumps(root,0);
   json_decref(root);
   string json(buffer);
