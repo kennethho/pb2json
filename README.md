@@ -8,14 +8,17 @@ Support all type of protobuf Message (example: see test/person.proto) except bin
 
 1. Install protobuf and jansson
 You can easily install protobuf and jansson in most recent Linux distros. In Ubuntu, you do:
+
     $ sudo apt-get install libjansson-dev libprotobuf-dev protobuf-compiler
 
 2. Install
+
     $ cd $pb2json_dir/
     $ make 
     $ sudo make install
 
 3. Test & example
+
     $ cd $pb2json_dir/test
     $ make && ./runtest # to see the result
 
